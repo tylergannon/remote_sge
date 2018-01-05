@@ -10,10 +10,11 @@ name = "pypi"
 sshtunnel = "*"
 requests = "*"
 filelock = "*"
-drmaa = "*"
 
 
 [dev-packages]
 
 jedi = "*"
 pylint = "*"
+pytest = "*"
+pytest-mock = "*"

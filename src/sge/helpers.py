@@ -31,8 +31,8 @@ from collections import namedtuple
 from ctypes import (byref, c_uint, create_string_buffer, POINTER, pointer,
                     sizeof)
 
-from drmaa.const import ATTR_BUFFER, ENCODING, NO_MORE_ELEMENTS, QSubOptions
-from drmaa.errors import error_buffer
+from sge.const import ATTR_BUFFER, ENCODING, NO_MORE_ELEMENTS, QSubOptions
+from sge.errors import error_buffer
 from datetime import datetime
 
 _BUFLEN = ATTR_BUFFER

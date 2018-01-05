@@ -26,9 +26,9 @@ import sys
 from collections import namedtuple
 from ctypes import byref, c_int, create_string_buffer, pointer, POINTER, sizeof
 
-from drmaa.const import (JobState, JobControlAction,
+from sge.const import (JobState, JobControlAction,
                          JobSubmissionState)
-from drmaa.helpers import (BoolConverter, IntConverter, QSubOption, QSubOptions, 
+from sge.helpers import (BoolConverter, IntConverter, QSubOption, QSubOptions, 
                            DictionaryConverter, DateTimeConverter)
 
 
