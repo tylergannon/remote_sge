@@ -36,9 +36,10 @@ def basic_job_request():
 
     
 
-EXPECTED_ARGS = ['/opt/bin/amd64/qsub', '-dl 201801050000.00', '-a 201801040000.00', 
-                 '-v bax=qaax,foot=head', '-h None', '-j yes', '-N bartholomew', '-o /tmp', 
-                 '-wd /home/funkytron/mywd', '/usr/local/bin/quuxtable', 'foo', 'baz', 'quux']
+EXPECTED_ARGS = ['/opt/bin/amd64/qsub', '-dl', '201801050000.00', '-a', '201801040000.00', 
+                 '-v', 'bax=qaax,foot=head', '-h', '-j', 'yes', '-N', 'bartholomew', 
+                 '-o', '/tmp', '-wd', '/home/funkytron/mywd', 
+                 '/usr/local/bin/quuxtable', 'foo', 'baz', 'quux']
 def test_do_something_cool(mega_job_request, mocker):
     mocker.patch('sge.shell.run')
     sge.shell.run.return_value = RESPONSE

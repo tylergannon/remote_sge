@@ -40,7 +40,9 @@ class JobRequest(object):
         Returns:
             The ID of the new job, as an integer.
         """
-        qsub_arguments = ["%s %s" % item for item in self.qsub_options.items()]
+        #  Keeping this here for a moment in case something goes wrong.
+        # qsub_arguments = ["%s %s" % item for item in self.qsub_options.items()]
+        qsub_arguments = [y for x in self.qsub_options.items() for y in x if y]
         cmd_output = sge.shell.run(*[QSUB] +
                                    qsub_arguments + [self.command_path] +
                                    self.command_arguments)
