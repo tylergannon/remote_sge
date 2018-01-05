@@ -36,6 +36,11 @@ def get_job_status(job_id):
 
 
 class JobDetail(object):
+    """
+    Receives an XML ElementTree and provides attributes which read from it.
+
+    
+    """
     command_path = XPathAttr('JB_script_file')
     owner = XPathAttr('JB_owner')
     job_id = XPathAttr('JB_job_number', XmlIntDeserializer)
