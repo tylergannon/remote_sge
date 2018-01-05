@@ -64,63 +64,7 @@ class ServerConfig(ConfigBase):
         Returns a dictionary of default 
 
         """
-        "Calls out to qsub, returns the job id of the newly enqueued job."
-        args = self.__qsub_params.copy()
-        args['-wd'] = self.working_dir
-        if self.job_name:
-            args['-N'] = self.job_name
-        if self.command_environment:
-            args['-v'] = dict_to_string(self.command_environment)
-        if self.output_path:
-            args['-o'] = self.output_path
-        if self.on_hold:
-            args['-hu'] = None
-        if self.config.get("output_path"):
-            args['-o'] = self.config.get('"output_path"')
-        if 'join_stdout_and_stderr' in self.config:
-            args['-j'] = bool_to_yn(self.config.getboolean('join_stdout_and_stderr'))
-        if self.config.get('command_shell'):
-            args['-S'] = self.config.get('command_shell')
-        if self.config.get('parallel_environment'):
-            args['-pe'] = self.config.get('parallel_environment')
-        if 'binary_executable' in self.config:
-            args['-b'] = bool_to_yn(self.config.getboolean('binary_executable'))
-        if 'exec_in_shell' in self.config:
-            args['-shell'] = bool_to_yn(self.config.getboolean('exec_in_shell'))
-
-        if self.command_environment:
-            args['-v'] = dict_to_string(self.command_environment)
-
-        if self.config.get('default_queue'):
-            args['-q'] = self.config.get('default_queue')
-
-
-
         pass
-
-    @staticmethod
-    def dict_to_string(dictionary):
-        "Translate a dictionary to a string like 'KEY=val,KEY2=val2"
-        result = []
-        for item in dictionary.items():
-            result.append("%s=%s" % item)
-        return ','.join(result)
-
-    @staticmethod
-    def bool_to_yn(boolean):
-        """
-        Returns a *yes* or *no*, which is how qsub likes its boolean arguments.
-
-        Args:
-            boolean (bool): the value to be converted
-
-        Returns:
-            "yes" for True and "no" for False
-        """
-        if boolean:
-            return r"yes"
-        else:
-            return r"no"
 
 
 

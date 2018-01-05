@@ -55,8 +55,6 @@ TIMEOUT_NO_WAIT = 0
 JOB_IDS_SESSION_ANY = b"DRMAA_JOB_IDS_SESSION_ANY"
 JOB_IDS_SESSION_ALL = b"DRMAA_JOB_IDS_SESSION_ALL"
 
-SUBMISSION_STATE_ACTIVE = "drmaa_active"
-SUBMISSION_STATE_HOLD = "drmaa_hold"
 
 # Agreed placeholder names
 PLACEHOLDER_INCR = b"$drmaa_incr_ph$"
@@ -110,20 +108,6 @@ class JobState(object):
 
 # Job control action
 
-class QSubOptions(object):
-    HOLD = '-h'
-    WORKING_DIR = '-wd'
-    START_TIME = '-a'
-    JOB_NAME = '-N'
-    ENV = '-v'
-    OUTPUT_PATH = '-o'
-    JOIN = '-j'
-    SHELL = '-S'
-    PARALLEL_ENVIRONMENT = '-pe'
-    BINARY = '-b'
-    EXEC_IN_SHELL = '-shell'
-    QUEUE = '-q'
-    DEADLINE_TIME = '-dl'
 
 
 class JobControlAction(object):
@@ -166,13 +150,3 @@ _JOB_PS = {0x00: JobState.UNDETERMINED,
 # State at submission time
 
 
-class JobSubmissionState(object):
-    HOLD_STATE = SUBMISSION_STATE_HOLD
-    ACTIVE_STATE = SUBMISSION_STATE_ACTIVE
-
-_SUBMISSION_STATE = [JobSubmissionState.HOLD_STATE,
-                     JobSubmissionState.ACTIVE_STATE]
-
-
-def submission_state(code):
-    return _SUBMISSION_STATE[code]

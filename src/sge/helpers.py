@@ -31,14 +31,14 @@ from collections import namedtuple
 from ctypes import (byref, c_uint, create_string_buffer, POINTER, pointer,
                     sizeof)
 
-from sge.const import ATTR_BUFFER, ENCODING, NO_MORE_ELEMENTS, QSubOptions
+from sge.const import ATTR_BUFFER, ENCODING, NO_MORE_ELEMENTS
 from sge.errors import error_buffer
 from datetime import datetime
 
 _BUFLEN = ATTR_BUFFER
 
 
-class QSubOption(object):
+class CmdOptionAttr(object):
     """
     Descriptor for properties on the JobTemplate class, to translate DRMAA options
     to properly formatted qsub options.
@@ -67,16 +67,14 @@ class QSubOption(object):
     def __get__(self, instance, _):
         raw_value = instance.qsub_options[self.option_name]
         if self.converter:
-            return self.converter.from_string(raw_value)
+            return self.converter.deserialize(raw_value)
         else:
             return raw_value
 
     def __set__(self, instance, value):
         print(instance)
         if self.converter:
-            value = self.converter.to_string(value)
-        elif isinstance(value, str):
-            value = value.encode(ENCODING)
+            value = self.converter.serialize(value)
 
         instance.qsub_options[self.option_name] = value
 
@@ -86,7 +84,7 @@ class QSubOption(object):
 
 
 
-class QSubTypeConverter(object):
+class StringSerializer(object):
     """
     Abstract class representing how to convert between int,
     boolean or dict types, and their string representations
@@ -95,15 +93,15 @@ class QSubTypeConverter(object):
     .. _qsub: http://gridscheduler.sourceforge.net/htmlman/htmlman1/qsub.html
     """
     @staticmethod
-    def to_string(value):
+    def serialize(value):
         pass
     @staticmethod
     def from_string(value):
         pass
 
-class DictionaryConverter(QSubTypeConverter):
+class DictionaryConverter(StringSerializer):
     @staticmethod
-    def to_string(dictionary):
+    def serialize(dictionary):
         # result = []
         # for item in dictionary.items():
         #     result.append("%s=%s" % item)
@@ -112,7 +110,7 @@ class DictionaryConverter(QSubTypeConverter):
     def from_string(value):
         return dict(item.split("=") for item in value.split(","))
 
-class DateTimeConverter(QSubTypeConverter):
+class DateTimeConverter(StringSerializer):
     """
     Converts a python :class:`~datetime.datetime` into a string in the format
     YYYYMMDDhhmm.SS, as described in the sge datetype_ specification.
@@ -121,35 +119,35 @@ class DateTimeConverter(QSubTypeConverter):
     """
     FORMAT = r"%Y%m%d%H%M.%S"
     @staticmethod
-    def to_string(datetime):
+    def serialize(datetime):
         return datetime.strftime(DateTimeConverter.FORMAT)
     @staticmethod
     def from_string(string):
         return datetime.strptime(string, DateTimeConverter.FORMAT)
 
 
-class BoolConverter(QSubTypeConverter):
+class BoolConverter(StringSerializer):
     """Helper class to convert to/from bool attributes."""
     TRUE = r'yes'
     FALSE = r'no'
 
     @staticmethod
-    def to_string(value):
+    def serialize(value):
         if value:
             return BoolConverter.TRUE
         else:
             return BoolConverter.FALSE
         
     @staticmethod
-    def from_string(value):
+    def deserialize(value):
         return value == BoolConverter.TRUE
 
 
-class IntConverter(QSubTypeConverter):
+class IntConverter(StringSerializer):
 
     """Helper class to convert to/from int attributes."""
     @staticmethod
-    def to_string(value):
+    def serialize(value):
         return str(value)
 
     @staticmethod

@@ -26,9 +26,8 @@ import sys
 from collections import namedtuple
 from ctypes import byref, c_int, create_string_buffer, pointer, POINTER, sizeof
 
-from sge.const import (JobState, JobControlAction,
-                         JobSubmissionState)
-from sge.helpers import (BoolConverter, IntConverter, QSubOption, QSubOptions, 
+from sge.const import (JobState, JobControlAction)
+from sge.helpers import (BoolConverter, IntConverter, CmdOptionAttr, 
                            DictionaryConverter, DateTimeConverter)
 
 
@@ -37,120 +36,6 @@ JobInfo = namedtuple("JobInfo",
                         wasAborted exitStatus resourceUsage""")
 
 
-class JobTemplate(object):
-
-    # @property
-    # def attributeNames(self):
-    #     """
-    #     The list of supported DRMAA scalar attribute names.
-
-    #     This is apparently useless now, and should probably substituted by the
-    #     list of attribute names of the JobTemplate instances.
-    #     """
-    #     return list(attribute_names_iterator())
-
-    # scalar attributes
-    remoteCommand = None
-    """The command to be executed."""
-
-    @property
-    def job_submission_state(self):
-        """
-        Whether the job should be submitted with a hold, or queued/active.
-        Use the constants from :class:`drmaa.JobSubmissionState`.
-        """
-        if QSubOptions.HOLD in self.qsub_options:
-            return JobSubmissionState.HOLD_STATE
-        else:
-            return JobSubmissionState.ACTIVE_STATE
-
-    @job_submission_state.setter
-    def job_submission_state(self, value):
-        """
-        Since -h is a binary flag, setting the value here will either add or remove
-        the flag from `qsub_options`.
-        """
-        if value == JobSubmissionState.HOLD_STATE:
-            self.qsub_options[QSubOptions.HOLD] = None
-        elif QSubOptions.HOLD in self.qsub_options:
-            del self.qsub_options[QSubOptions.HOLD]
-    
-
-    """The job status."""
-    working_directory = QSubOption(QSubOptions.WORKING_DIR)
-
-    """The job working directory."""
-    # jobCategory = None  #: The job category.  Ignored here.
-    native_specification = None #: Raw command-line options for qsub.
-    """
-    A (DRM-dependant) opaque string to be passed to the DRM representing
-    other directives.
-    """
-    # blockEmail = Attribute(BLOCK_EMAIL, type_converter=BoolConverter)
-    """False if this job should send an email, True otherwise."""
-
-    start_Time = QSubOption(QSubOptions.START_TIME, type_converter=DateTimeConverter)#: Start time
-
-    """The job start time, a partial timestamp string."""
-    job_name = QSubOption(QSubOptions.JOB_NAME)
-    """The job Name."""
-    # inputPath = None # But we're not supporting reading from STDIN
-    """The path to a file representing job's stdin."""
-    output_path = QSubOption(QSubOptions.OUTPUT_PATH)
-    """The path to a file representing job's stdout."""
-    # errorPath = Attribute(ERROR_PATH) #  Not supported in this version.
-    """The path to a file representing job's stderr."""
-    join_files = QSubOption(QSubOptions.JOIN, BoolConverter)
-    """True if stdin and stdout should be merged, False otherwise."""
-    # the following is available on ge6.2 only if enabled via cluster
-    # configuration
-    # transferFiles = Attribute(TRANSFER_FILES) # Not supporting this.
-    """
-    True if file transfer should be enabled, False otherwise.
-
-    This option might require specific DRM configuration (it does on SGE).
-    """
-    # the following are apparently not available on ge 6.2
-    # it will raise if you try to access these attrs
-    deadline_time = QSubOption(QSubOptions.DEADLINE_TIME, DateTimeConverter)
-    """The job deadline time, a partial timestamp string."""
-    # hardWallclockTimeLimit = Attribute(WCT_HLIMIT, IntConverter)
-    """
-    'Hard' Wallclock time limit, in seconds.
-
-    The job will be killed by the DRM if it takes more than
-    'hardWallclockTimeLimit' to complete.
-    """
-    # softWallclockTimeLimit = Attribute(WCT_SLIMIT, IntConverter)
-    """
-    'Soft' Wallclock time limit, in seconds.
-
-    The job will be signaled by the DRM if it takes more than
-    'hardWallclockTimeLimit' to complete.
-    """
-    # hardRunDurationLimit = Attribute(DURATION_HLIMIT, IntConverter)
-    # softRunDurationLimit = Attribute(DURATION_SLIMIT, IntConverter)
-
-    # vector attributes
-    # email = VectorAttribute(V_EMAIL)
-    """email addresses to whom send job completion info."""
-    command_arguments = [] #: The arguments to be given to the command.
-    """The job's command argument list."""
-    # dict attributes
-    job_environment = QSubOption(QSubOptions.ENV, DictionaryConverter)
-    """The job's environment dict."""
-
-    _as_parameter_ = None
-
-    def __init__(self, **kwargs):
-        """
-        Builds a JobTemplate instance.
-
-        Attributes can be passed as keyword arguments.
-        """
-        self.qsub_options = {}
-        for aname in kwargs:
-            setattr(self, aname, kwargs.get(aname))
 
 
 class Session(object):
@@ -164,32 +49,6 @@ class Session(object):
     def __init__(self, contactString=None):
         self.contactString = contactString
 
-    # returns JobTemplate instance
-    @staticmethod
-    def createJobTemplate():
-        """
-        Allocates a new job template.
-
-        The job template is used to set the environment for jobs to be
-        submitted. Once the job template has been created, it should also be
-        deleted (via deleteJobTemplate()) when no longer needed. Failure to do
-        so may result in a memory leak.
-        """
-        return JobTemplate()
-
-    # takes JobTemplate instance, no return value
-    @staticmethod
-    def deleteJobTemplate(jobTemplate):
-        """
-        Deallocate a job template.
-
-        :Parameters:
-          jobTemplate : JobTemplate
-            the job temptare to be deleted
-
-        This routine has no effect on running jobs.
-        """
-        jobTemplate.delete()
 
     # takes JobTemplate instance, returns string
     @staticmethod
