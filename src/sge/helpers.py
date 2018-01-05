@@ -176,7 +176,7 @@ class DictionaryConverter(StringSerializer):
 class DateTimeConverter(StringSerializer):
     """
     Converts a python :class:`~datetime.datetime` into a string in the format
-    YYYYMMDDhhmm.SS, as described in the sge datetype_ specification.
+    YYYYMMDDhhmm.SS, as described in the sge datatype_ specification.
 
     .. _datatype: http://gridscheduler.sourceforge.net/htmlman/htmlman1/sge_types.html
     """

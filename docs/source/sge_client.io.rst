@@ -20,22 +20,6 @@ sge\_client\.io\.database module
     :undoc-members:
     :show-inheritance:
 
-sge\_client\.io\.drmaa\_calls module
-------------------------------------
-
-.. automodule:: sge_client.io.drmaa_calls
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-sge\_client\.io\.fakedrmaa module
----------------------------------
-
-.. automodule:: sge_client.io.fakedrmaa
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
 sge\_client\.io\.jobarchive module
 ----------------------------------
 

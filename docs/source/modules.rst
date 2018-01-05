@@ -4,5 +4,6 @@ sge_server
 .. toctree::
    :maxdepth: 4
 
-   sge_server
+   sge
    sge_client
+   sge_server

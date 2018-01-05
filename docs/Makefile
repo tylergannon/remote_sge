@@ -11,6 +11,7 @@ BUILDDIR      = build
 APIDOCOPTS    = -f --ext-autodoc --ext-intersphinx
 SPHINXAPIDOC  = sphinx-apidoc
 DOC_SRC_DIR   = ./source
+SGE_MODULE_PATH   = $(PWD)/../src/sge
 CLI_MODULE_PATH   = $(PWD)/../src/sge_client
 SRV_MODULE_PATH   = $(PWD)/../src/sge_server
 
@@ -24,6 +25,7 @@ help:
 .PHONY: help Makefile
 
 docstubs:
+	@$(SPHINXAPIDOC) $(APIDOCOPTS) -o $(DOC_SRC_DIR) $(SGE_MODULE_PATH) $(EXCLUDES)
 	@$(SPHINXAPIDOC) $(APIDOCOPTS) -o $(DOC_SRC_DIR) $(CLI_MODULE_PATH) $(EXCLUDES)
 	@$(SPHINXAPIDOC) $(APIDOCOPTS) -o $(DOC_SRC_DIR) $(SRV_MODULE_PATH) $(EXCLUDES)
 

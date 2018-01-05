@@ -19,6 +19,14 @@ sge\_client\.config module
     :undoc-members:
     :show-inheritance:
 
+sge\_client\.shuttle module
+---------------------------
+
+.. automodule:: sge_client.shuttle
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 sge\_client\.util module
 ------------------------
 
