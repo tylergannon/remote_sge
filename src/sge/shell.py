@@ -14,5 +14,8 @@ def run_in_shell(command, *arguments):
 
 def run(command, *arguments):
     "Runs the specified command through BASH and returns the STDOUT output as a string."
+    print("Running %s with arguments:" % command)
+    print(arguments)
+
     process = subprocess.run([command, *arguments], stdout=PIPE, stderr=STDOUT)
     return process.stdout.decode()
