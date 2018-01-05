@@ -29,6 +29,15 @@ class QSubOptions(object):
     DEADLINE_TIME = '-dl'
 
 class JobRequest(object):
+    """
+    A request for a new job, which is submitted to qsub_ via the
+    :func:`sge.submit.JobRequest.submit` method.
+
+    At a very minimum, the `command_path` must be set or else no job
+    will be submitted.
+
+    .. _qsub: http://gridscheduler.sourceforge.net/htmlman/htmlman1/qsub.html
+    """
 
     def submit(self):
         """
@@ -39,13 +48,12 @@ class JobRequest(object):
 
         Returns:
             The ID of the new job, as an integer.
+
+            If no job was successfully submitted, returns None.
         """
-        #  Keeping this here for a moment in case something goes wrong.
-        # qsub_arguments = ["%s %s" % item for item in self.qsub_options.items()]
-        qsub_arguments = [y for x in self.qsub_options.items() for y in x if y]
-        cmd_output = sge.shell.run(*[QSUB] +
-                                   qsub_arguments + [self.command_path] +
-                                   self.command_arguments)
+        qsub_arguments = [*[y for x in self.qsub_options.items() for y in x if y],
+                          self.command_path, *self.command_arguments]
+        cmd_output = sge.shell.run(QSUB, *qsub_arguments)
         matches = re.findall(JOB_ID_REGEX, cmd_output)
         if matches:
             return int(matches[0])
@@ -78,7 +86,7 @@ class JobRequest(object):
 
     working_directory = CmdOptionAttr(QSubOptions.WORKING_DIR)
     native_specification = None #: Raw command-line options for qsub.
-    start_time = CmdOptionAttr(QSubOptions.START_TIME, type_converter=DateTimeConverter)#: Start time
+    start_time = CmdOptionAttr(QSubOptions.START_TIME, DateTimeConverter)#: Start time
     job_name = CmdOptionAttr(QSubOptions.JOB_NAME)
     output_path = CmdOptionAttr(QSubOptions.OUTPUT_PATH)
     join_files = CmdOptionAttr(QSubOptions.JOIN, BoolConverter)
