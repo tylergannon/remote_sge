@@ -100,3 +100,4 @@ ENV/
 # mypy
 .mypy_cache/
 
+libdrmaa.so.1.0

@@ -1,0 +1,31 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+author	../source/conf.py	/^author = 'Tyler Gannon'$/;"	kind:variable	line:60
+conf.py	../source/conf.py	1;"	kind:file	line:1
+copyright	../source/conf.py	/^copyright = '2017, Tyler Gannon'$/;"	kind:variable	line:59
+exclude_patterns	../source/conf.py	/^exclude_patterns = []$/;"	kind:variable	line:81
+extensions	../source/conf.py	/^extensions = ['sphinx.ext.autodoc', 'sphinx.ext.intersphinx']$/;"	kind:variable	line:35
+html_sidebars	../source/conf.py	/^html_sidebars = {$/;"	kind:variable	line:113
+html_static_path	../source/conf.py	/^html_static_path = ['nstatic']$/;"	kind:variable	line:106
+html_theme	../source/conf.py	/^html_theme = 'alabaster'$/;"	kind:variable	line:95
+htmlhelp_basename	../source/conf.py	/^htmlhelp_basename = 'remote_sgedoc'$/;"	kind:variable	line:134
+intersphinx_mapping	../source/conf.py	/^intersphinx_mapping = {$/;"	kind:variable	line:37
+language	../source/conf.py	/^language = None$/;"	kind:variable	line:76
+latex_documents	../source/conf.py	/^latex_documents = [$/;"	kind:variable	line:160
+latex_elements	../source/conf.py	/^latex_elements = {$/;"	kind:variable	line:139
+man_pages	../source/conf.py	/^man_pages = [$/;"	kind:variable	line:170
+master_doc	../source/conf.py	/^master_doc = 'index'$/;"	kind:variable	line:55
+os	../source/conf.py	/^import os$/;"	kind:namespace	line:20
+project	../source/conf.py	/^project = 'remote_sge'$/;"	kind:variable	line:58
+pygments_style	../source/conf.py	/^pygments_style = 'sphinx'$/;"	kind:variable	line:84
+release	../source/conf.py	/^release = '0.1.12'$/;"	kind:variable	line:69
+source_suffix	../source/conf.py	/^source_suffix = '.rst'$/;"	kind:variable	line:52
+sys	../source/conf.py	/^import sys$/;"	kind:namespace	line:21
+templates_path	../source/conf.py	/^templates_path = ['ntemplates']$/;"	kind:variable	line:46
+texinfo_documents	../source/conf.py	/^texinfo_documents = [$/;"	kind:variable	line:181
+todo_include_todos	../source/conf.py	/^todo_include_todos = False$/;"	kind:variable	line:87
+version	../source/conf.py	/^version = '0.1'$/;"	kind:variable	line:67

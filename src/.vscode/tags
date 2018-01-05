@@ -1,0 +1,37 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+__init__.py	../client/sge_client/__init__.py	1;"	kind:file	line:1
+__init__.py	../client/sge_client/io/__init__.py	1;"	kind:file	line:1
+author	../docs/source/conf.py	/^author = 'Tyler Gannon'$/;"	kind:variable	line:52
+conf.py	../docs/source/conf.py	1;"	kind:file	line:1
+copyright	../docs/source/conf.py	/^copyright = '2017, Tyler Gannon'$/;"	kind:variable	line:51
+exclude_patterns	../docs/source/conf.py	/^exclude_patterns = []$/;"	kind:variable	line:73
+extensions	../docs/source/conf.py	/^extensions = ['sphinx.ext.autodoc']$/;"	kind:variable	line:35
+extract_job	../client/sge_client/io/packaging.py	/^def extract_job(iobase, destination):$/;"	kind:function	line:7
+fartbag.py	../client/sge_client/fartbag.py	1;"	kind:file	line:1
+html_sidebars	../docs/source/conf.py	/^html_sidebars = {$/;"	kind:variable	line:105
+html_static_path	../docs/source/conf.py	/^html_static_path = ['nstatic']$/;"	kind:variable	line:98
+html_theme	../docs/source/conf.py	/^html_theme = 'alabaster'$/;"	kind:variable	line:87
+htmlhelp_basename	../docs/source/conf.py	/^htmlhelp_basename = 'remote_sgedoc'$/;"	kind:variable	line:116
+language	../docs/source/conf.py	/^language = None$/;"	kind:variable	line:68
+latex_documents	../docs/source/conf.py	/^latex_documents = [$/;"	kind:variable	line:142
+latex_elements	../docs/source/conf.py	/^latex_elements = {$/;"	kind:variable	line:121
+man_pages	../docs/source/conf.py	/^man_pages = [$/;"	kind:variable	line:152
+master_doc	../docs/source/conf.py	/^master_doc = 'index'$/;"	kind:variable	line:47
+norberg	../client/sge_client/fartbag.py	/^def norberg(foo):$/;"	kind:function	line:3
+os	../docs/source/conf.py	/^import os$/;"	kind:namespace	line:20
+packaging.py	../client/sge_client/io/packaging.py	1;"	kind:file	line:1
+project	../docs/source/conf.py	/^project = 'remote_sge'$/;"	kind:variable	line:50
+pygments_style	../docs/source/conf.py	/^pygments_style = 'sphinx'$/;"	kind:variable	line:76
+release	../docs/source/conf.py	/^release = '0.1'$/;"	kind:variable	line:61
+source_suffix	../docs/source/conf.py	/^source_suffix = '.rst'$/;"	kind:variable	line:44
+sys	../docs/source/conf.py	/^import sys$/;"	kind:namespace	line:21
+tarfile	../client/sge_client/io/packaging.py	/^import tarfile$/;"	kind:namespace	line:5
+templates_path	../docs/source/conf.py	/^templates_path = ['ntemplates']$/;"	kind:variable	line:38
+texinfo_documents	../docs/source/conf.py	/^texinfo_documents = [$/;"	kind:variable	line:163
+todo_include_todos	../docs/source/conf.py	/^todo_include_todos = False$/;"	kind:variable	line:79
+version	../docs/source/conf.py	/^version = '0.1.4'$/;"	kind:variable	line:59
