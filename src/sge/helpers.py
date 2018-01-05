@@ -27,15 +27,30 @@ internal helpers
 from __future__ import absolute_import, print_function, unicode_literals
 
 import sys
-from collections import namedtuple
+from collections import namedtuple, OrderedDict
 from ctypes import (byref, c_uint, create_string_buffer, POINTER, pointer,
                     sizeof)
 
 from sge.const import ATTR_BUFFER, ENCODING, NO_MORE_ELEMENTS
-from sge.errors import error_buffer
 from datetime import datetime
 
 _BUFLEN = ATTR_BUFFER
+
+class XPathAttr(object):
+    def __init__(self, xpath, converter=None):
+        self.xpath = xpath
+        self.converter = converter
+
+    def __get__(self, instance, _):
+        try:
+            xml_element = instance.xml_node.find(self.xpath)
+            if self.converter:
+                return self.converter.deserialize(xml_element)
+            else:
+                return xml_element.text
+        except AttributeError:
+            raise
+    
 
 
 class CmdOptionAttr(object):
@@ -82,7 +97,40 @@ class CmdOptionAttr(object):
         print( "deleted in descriptor object")
         del instance.qsub_options[self.option_name]
 
+def element_text(element):
+    try:
+        return element.text
+    except AttributeError:
+        pass
 
+class XmlEnvironmentDeserializer(object):
+    @staticmethod
+    def deserialize(xml_node):
+        res = OrderedDict()
+        if xml_node != None:
+            for var_el in xml_node.getchildren():
+                var_name = var_el.find('VA_variable').text
+                if var_name[0:14] != '__SGE_PREFIX__':
+                    res[var_name] = element_text(var_el.find('VA_value'))
+        return res
+
+class XmlJobArgumentsDeserializer(object):
+    @staticmethod
+    def deserialize(xml_element):
+        res = []
+        print('dork sauce')
+        print(xml_element)
+        if xml_element != None:
+            for arg_el in xml_element.getchildren():
+                res.append(arg_el.find('ST_name').text)
+        return res
+
+class XmlIntDeserializer(object):
+    @staticmethod
+    def deserialize(xml_element):
+        text = element_text(xml_element)
+        if text:
+            return int(text)
 
 class StringSerializer(object):
     """
@@ -148,9 +196,10 @@ class IntConverter(StringSerializer):
     """Helper class to convert to/from int attributes."""
     @staticmethod
     def serialize(value):
+        # print(value)
         return str(value)
 
     @staticmethod
-    def from_string(value):
+    def deserialize(value):
         return int(value)
 

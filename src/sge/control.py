@@ -9,13 +9,6 @@ QHOLD = os.path.expandvars("${SGE_ROOT}/bin/${SGE_ARCH}/qhold")
 QMOD = os.path.expandvars("${SGE_ROOT}/bin/${SGE_ARCH}/qmod")
 QALTER = os.path.expandvars("${SGE_ROOT}/bin/${SGE_ARCH}/qalter")
 
-class StateCodes(object):
-    SUSPENDED = r's'
-    RUNNING = r'r'
-    QUEUED_ACTIVE = r'qw'
-    QUEUED_HELD = r'hqw'
-    UNKNOWN = r'unknown'
-
 class QModOpt(object):
     SUSPEND = r'-sj'
     UNSUSPEND = r'-usj'
