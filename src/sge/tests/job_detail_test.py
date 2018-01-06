@@ -22,9 +22,9 @@ def test_job_detail(job_detail_xml, job_details, mocker):
     sge.shell.run.return_value = job_detail_xml
     job_detail = sge.status.get_job_detail(job_details['JOB_ID'])
 
-    assert job_detail.command_path == job_details['SCRIPT_PATH']
     assert job_detail.gid == 500
     assert job_detail.uid == 500
+    assert job_detail.command_path == job_details['SCRIPT_PATH']
     assert job_detail.owner == job_details['USER']
     assert job_detail.job_name == job_details['JOB_NAME']
     assert job_detail.job_environment[job_details['ENVVAR']] == job_details['ENVVAL']

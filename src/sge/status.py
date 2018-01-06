@@ -66,4 +66,3 @@ def get_job_detail(job_id):
     else:
         root = ElementTree.fromstring(xml)
         return JobDetail(root.find('djob_info/element'))
-        

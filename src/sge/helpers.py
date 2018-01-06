@@ -24,21 +24,12 @@
 internal helpers
 """
 
-from __future__ import absolute_import, print_function, unicode_literals
-
-import sys
-from collections import namedtuple, OrderedDict
-from ctypes import (byref, c_uint, create_string_buffer, POINTER, pointer,
-                    sizeof)
-
-from sge.const import ATTR_BUFFER, ENCODING, NO_MORE_ELEMENTS
+from collections import OrderedDict
 from datetime import datetime
-
-_BUFLEN = ATTR_BUFFER
 
 class XPathAttr(object):
     """
-    Descriptor for properties on the :class:`sge.status.JobDetail` class, to 
+    Descriptor for properties on the :class:`sge.status.JobDetail` class, to
     translate values from the XML given by qstat into more readable fashion.
 
     See the initializer and the getter for an understanding of the mechanics.
@@ -46,11 +37,11 @@ class XPathAttr(object):
     def __init__(self, xpath, converter=None):
         """
         Args:
-            xpath (str): a relative XPath query describing where to find the 
+            xpath (str): a relative XPath query describing where to find the
                 attribute.
 
             converter: an object with a deserialize method, which will receive
-                an XML node and return the appropriate data type. 
+                an XML node and return the appropriate data type.
         """
         self.xpath = xpath
         self.converter = converter
@@ -66,7 +57,7 @@ class XPathAttr(object):
         if self.converter:
             return self.converter.deserialize(xml_element)
         else:
-            return element_text(xml_element.text)
+            return element_text(xml_element)
 
 class CmdOptionAttr(object):
     """
@@ -200,7 +191,7 @@ class BoolConverter(StringSerializer):
             return BoolConverter.TRUE
         else:
             return BoolConverter.FALSE
-        
+
     @staticmethod
     def deserialize(value):
         return value == BoolConverter.TRUE
