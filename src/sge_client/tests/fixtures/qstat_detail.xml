@@ -69,7 +69,10 @@
             </JB_env_list>
             <JB_job_args>
                 <element>
-                    <ST_name>50000</ST_name>
+                    <ST_name>${ARG1}</ST_name>
+                </element>
+                <element>
+                    <ST_name>${ARG2}</ST_name>
                 </element>
             </JB_job_args>
             <JB_script_file>${SCRIPT_PATH}</JB_script_file>

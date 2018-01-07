@@ -92,7 +92,7 @@ class JobRequest(object):
     join_files = CmdOptionAttr(QSubOptions.JOIN, BoolConverter)
     deadline_time = CmdOptionAttr(QSubOptions.DEADLINE_TIME, DateTimeConverter)
     command_arguments = [] #: The arguments to be given to the command.
-    job_environment = CmdOptionAttr(QSubOptions.ENV, DictionaryConverter)
+    environment = CmdOptionAttr(QSubOptions.ENV, DictionaryConverter)
 
     def __init__(self, **kwargs):
         """

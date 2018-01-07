@@ -47,11 +47,17 @@ class JobDetail(object):
     uid = XPathAttr('JB_uid', XmlIntDeserializer)
     gid = XPathAttr('JB_gid', XmlIntDeserializer)
     job_name = XPathAttr('JB_job_name')
-    job_environment = XPathAttr('JB_env_list', XmlEnvironmentDeserializer)
-    job_arguments = XPathAttr('JB_job_args', XmlJobArgumentsDeserializer)
+    environment = XPathAttr('JB_env_list', XmlEnvironmentDeserializer)
+    arguments = XPathAttr('JB_job_args', XmlJobArgumentsDeserializer)
 
     def __init__(self, xml_node):
         self.xml_node = xml_node
+
+    def to_dict(self):
+        "Makes it into a dictionary"
+        return dict(command_path=self.command_path, owner=self.owner, job_id=self.job_id,
+                    uid=self.uid, gid=self.gid, job_name=self.job_name,
+                    environment=self.environment, arguments=self.arguments)
 
 
 def get_job_detail(job_id):
@@ -60,7 +66,7 @@ def get_job_detail(job_id):
 
     .. _qstat: http://gridscheduler.sourceforge.net/htmlman/htmlman1/qstat.html
     """
-    xml = sge.shell.run([QSTAT, '-j', str(job_id), '-xml'])
+    xml = sge.shell.run(QSTAT, '-j', str(job_id), '-xml')
     if re.findall('unknown_jobs', xml):
         return None
     else:

@@ -18,7 +18,7 @@ def mega_job_request():
     request.command_arguments = ['foo', 'baz', 'quux']
     request.deadline_time = datetime.datetime(2018, 1, 5)
     request.start_time = datetime.datetime(2018, 1, 4)
-    request.job_environment = {'bax' : 'qaax', 'foot' : 'head'}
+    request.environment = {'bax' : 'qaax', 'foot' : 'head'}
     request.job_submission_state = sge.submit.JobSubmissionState.HOLD_STATE
     request.join_files = True
 

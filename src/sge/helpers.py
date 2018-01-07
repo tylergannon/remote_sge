@@ -124,8 +124,6 @@ class XmlJobArgumentsDeserializer(object):
     @staticmethod
     def deserialize(xml_element):
         res = []
-        print('dork sauce')
-        print(xml_element)
         if xml_element != None:
             for arg_el in xml_element.getchildren():
                 res.append(arg_el.find('ST_name').text)
