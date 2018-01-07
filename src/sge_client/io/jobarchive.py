@@ -4,11 +4,15 @@ SGE jobs.
 """
 from tempfile import SpooledTemporaryFile
 from os.path import basename, join
+from io import BytesIO
 import glob
 import re
 import tarfile
+from base64 import b64decode, b64encode
 
-def extract_job(iobase, destination):
+UTF8 = r"utf-8"
+
+def extract_job(data, destination):
     """
     Receives a readable stream containing a tgz archive and extracts it to the given destination.
 
@@ -22,13 +26,13 @@ def extract_job(iobase, destination):
     Returns:
         None
     """
-    with tarfile.open(mode="r|gz", fileobj=iobase) as archive:
+    with tarfile.open(mode="r|gz", fileobj=BytesIO(b64decode(data))) as archive:
         archive.extractall(destination)
 
 def package_job(*individual_files, working_dir=None, mask="*"):
     """
-    Receives a specification of files and returns a compressed archive in the form of an
-    :func:`~tempfile.SpooledTemporaryFile` for sending to the remote.
+    Receives a specification of files and returns a string containing a Base64-encoded, gzipped
+    tarfile, containing the specified files.
 
     If the inputs for the remote command (or even the command itself) are not present in the 
     remote system, it is necessary to package the required data for submission to the remote.
@@ -48,8 +52,7 @@ def package_job(*individual_files, working_dir=None, mask="*"):
         mask (:class:`str`): selector.  If working_dir is given, files in that directory will be
             included if they match the pattern given here.
 
-    Returns: a :func:`~tempfile.SpooledTemporaryFile` which can be used by the :mod:`requests`
-        module for uploading.
+    Returns: a string containing a Base64-encoded gzipped tarfile.
     """
     file_object = SpooledTemporaryFile()
     with tarfile.open(mode='x:gz', fileobj=file_object) as archive:
@@ -63,4 +66,4 @@ def package_job(*individual_files, working_dir=None, mask="*"):
                 if path_match:
                     archive.add(file, arcname=path_match[1])
     file_object.seek(0)
-    return file_object
+    return b64encode(file_object.read()).decode(UTF8)

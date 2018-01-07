@@ -22,13 +22,11 @@ def send_job_to_remote(job_id):
     """
     sge.control.user_hold(job_id)
     job_detail = sge.status.get_job_detail(job_id)
-    file_object = package_job(job_detail.command_path)
-    
 
     requests.post('http://remote-sge.getsandbox.com/jobs.json', json = {
         'name' : job_detail.job_name,
         'command' : basename(job_detail.command_path),
         'arguments' : job_detail.arguments,
         'environment' : job_detail.environment,
-        'package' : base64.b64encode(file_object.read()).decode('utf-8')
+        'package' : package_job(job_detail.command_path)
     })

@@ -24,10 +24,8 @@ def tarfile_object(file_path):
     return package_job(file_path)
 
 def test_can_serialize_tarfile(file_path, tarfile_object):
-    stringified_file = b64encode(tarfile_object.read()).decode('utf-8')
-    back_to_tarfile = b64decode(stringified_file)
     with tempfile.TemporaryDirectory() as dir:
-        extract_job(BytesIO(back_to_tarfile), dir)
+        extract_job(tarfile_object, dir)
         file1 = open(file_path).read()
         file2 = open(join(dir, basename(file_path))).read()
         assert file1 == file2    
