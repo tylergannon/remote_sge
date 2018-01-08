@@ -16,7 +16,11 @@ from sge_server import app
 @app.route("/")
 def root_path():
     "Root path"
-    return u"Restful SGE.  Don't use this app without training and authorization.\n"
+    return json.dumps({
+            'status': 200,
+            'application': "Remote SGE",
+            'message' : "Unauthorized use is forbiddden."
+        })
 
 # @app.route("/jobs.json")
 # def jobs_json():
@@ -45,21 +49,21 @@ def root_path():
 #     "Detailed JSON data for the given job."
 #     return send_from_directory(SERVER_CONFIG.get('completed_files_root'), "%s.tgz" % job_id)
 
-# @app.route('/jobs', methods=['POST'])
-# def submit_job():
-#     "Post job data and submit job to SGE."
-#     if 'file' in request.files:
-#         fileobj = request.files['file']
-#     else:
-#         fileobj = None
+@app.route('/jobs', methods=['POST'])
+def submit_job():
+    "Post job data and submit job to SGE."
+    if 'file' in request.files:
+        fileobj = request.files['file']
+    else:
+        fileobj = None
 
-#     with QSubWrapper.remote_job(request.form.get('name'),
-#                                 request.form.get('command'),
-#                                 work_root=SERVER_CONFIG.get('work_root'),
-#                                 finished_archive_dir=SERVER_CONFIG.get('completed_files_root'),
-#                                 command_arguments=request.form.getlist('arguments'),
-#                                 fileobj=fileobj)  as job_control:
-#         job_control.submit()
-#         sleep(0.01)
-#         detail = job_control.get_job_detail()
-#         return make_response(json.dumps(detail), 202)
+    with QSubWrapper.remote_job(request.form.get('name'),
+                                request.form.get('command'),
+                                work_root=SERVER_CONFIG.get('work_root'),
+                                finished_archive_dir=SERVER_CONFIG.get('completed_files_root'),
+                                command_arguments=request.form.getlist('arguments'),
+                                fileobj=fileobj)  as job_control:
+        job_control.submit()
+        sleep(0.01)
+        detail = job_control.get_job_detail()
+        return make_response(json.dumps(detail), 202)
