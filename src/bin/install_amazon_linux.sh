@@ -10,18 +10,20 @@ VERSION=3.6.4
 
 curl -L https://raw.githubusercontent.com/pyenv/pyenv-installer/master/bin/pyenv-installer | bash
 
-export PATH="/home/ec2-user/.pyenv/bin:$PATH"
+export PATH="$HOME/.pyenv/bin:$PATH"
 eval "$(pyenv init -)"
 eval "$(pyenv virtualenv-init -)"
 
 cat << EOF >> $HOME/.bashrc
-export PATH="/home/ec2-user/.pyenv/bin:$PATH"
-eval "$(pyenv init -)"
-eval "$(pyenv virtualenv-init -)"
+export PATH="$HOME/.pyenv/bin:\$PATH"
+eval "\$(pyenv init -)"
+eval "\$(pyenv virtualenv-init -)"
 EOF
 #   * Ensure that readline is there for Python.  We don't care about sqlite3.
-sudo yum -y install readline-devel
-#   * Install our Python (3.6.4)
+[[ ! -z `which yum 2>/dev/null` ]] && sudo yum -y install readline-devel
+[[ ! -z `which pacman 2>/dev/null` ]] && sudo pacman -S readline
+
+#   * Install our Python ($VERSION)
 pyenv install $VERSION
 
 pyenv virtualenv $VERSION remote_sge
