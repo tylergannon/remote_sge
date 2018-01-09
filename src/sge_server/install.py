@@ -61,6 +61,18 @@ option can be omitted, but specifying -e will overwrite
 the settings from $EDITOR.
 """
 
+ROOT_DESCRIPTION = """Where to place configs. Defaults to "$HOME/.config/remote_sge".
+The main readon for changing this would be if you want place
+the configuration into /etc/remote_sge.
+
+Be sure that you take note of the access controls on whatever
+location you specify.  If writing to that location requires
+sudo privileges, be sure to specify the -s parameter."""
+
+SYSTEMD_HELP = """Specify this if your system uses systemd.  Otherwise upstart will
+be assumed.  This affects how gunicorn is installed, and how the
+installer will restart services."""
+
 def sudo(command):
     os.system("sudo %s" % command)
 
@@ -109,13 +121,16 @@ def parse_args():
                         help="Perform the installation.",
                         action="store_true")
     parser.add_argument('-r', '--root',
-                        help="Where to place configs. Defaults to \"$HOME/.config/remote_sge\".",
+                        help=ROOT_DESCRIPTION,
                         default="$HOME/.config/remote_sge")
     parser.add_argument('-s', '--sudo',
                         help="Use sudo for placing config files (e.g. if installing into /etc).",
                         action="store_true")
     parser.add_argument('-a', '--alinux',
                         help="""Installs system components on Amazon Linux.""",
+                        action="store_true")
+    parser.add_argument('--systemd',
+                        help=SYSTEMD_HELP,
                         action="store_true")
     parser.description = DESCRIPTION
     return parser.parse_args()
@@ -132,8 +147,8 @@ class SslKeyCommands(object):
                        "\"/C=${country_code}/ST=${state}/L=${city}/O=${org}" +
                        "/OU=${org_unit}/CN=${common_name}\"")
     SELF_SIGNED_TLS_CERT=("openssl x509 -req -days 365 -in ${certs_path}/server.csr " +
-                          "-CA ${certs_path}/ca.crt -CAkey ca.key -set_serial 01 " + 
-                          "-out ${certs_path}/server.crt")
+                          "-CA ${certs_path}/ca.crt -CAkey ${certs_path}/ca.key " + 
+                          "-set_serial 01 -out ${certs_path}/server.crt")
     CREATE_CLIENT_KEY="openssl genrsa ${enctype} -out ${certs_path}/client.key 1024"
     CREATE_CLIENT_CSR=("openssl req -new -key ${certs_path}/client.key "+
                        "-out ${certs_path}/client.csr -subj " + 
@@ -183,9 +198,25 @@ def do_install(args):
     install_keys(args)
     edit_config_file("Web Server Configuration", "nginx.conf", args.root, **config['server'])
     sudo("ln -s %s /etc/nginx/conf.d/remote_sge.server.conf" % expandvars(join(args.root, "nginx.conf")))
+    restart_service('nginx')
+
+def restart_service(name):
+    print("Restarting " + name)
+    if CONFIG['loader'] == 'upstart':
+        command = "service %s restart"
+    else:
+        command = "systemctl restart %s"
+    sudo(command % name)
+
+def set_system_loader(args):
+    if args.systemd:
+        CONFIG['loader'] = 'systemd'
+    else:
+        CONFIG['loader'] = 'upstart'
 
 def main():
     args = parse_args()
+    set_system_loader(args)
     if args.sudo:
         CONFIG['use_sudo'] = True
     if args.install:
