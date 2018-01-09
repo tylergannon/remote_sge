@@ -15,10 +15,16 @@ from os.path import dirname, join, abspath
 #
 #########################################################
 
+# Name of the gunicorn instance
 name = "restful_sge"
-# BIND="unix:~/FLASK/sock"
-bind = "127.0.0.1:8080"
-user='tyler'
-group="tyler"
+# IP or socket binding
+bind = "${wsgi_binding}"
+# User whom gunicorn will run as
+user="$$USER"
+# Group whom gunicorn will run as
+group="$$USER"
+# Number of worker processes to start
 workers=4
-logconfig = abspath(join(dirname(__file__), 'logging.conf'))
+
+# Location of the logging config file.  Don't change this, probably.
+logconfig = "${dest_path}/logging.conf"

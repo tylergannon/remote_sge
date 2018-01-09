@@ -9,7 +9,6 @@ from tempfile import NamedTemporaryFile
 
 from argparse import ArgumentParser, RawTextHelpFormatter
 import sge.shell
-import sge_server
 
 YUM_PACKAGES = ['nginx', 'sqlite-devel', 'readline-devel', 'bzip2-devel',
                 'git', 'gcc', 'gcc-c++', 'kernel-devel', 'make',
@@ -188,6 +187,10 @@ def load_config(file=None, string=None, name=None):
         CONFIG[name] = config
     return config
 
+def setup_gunicorn(args):
+    os.system("pip install flask gunicorn")
+    pass
+
 def do_install(args):
     CONFIG['editor'] = get_editor(args)
     if args.alinux:
@@ -199,6 +202,7 @@ def do_install(args):
     edit_config_file("Web Server Configuration", "nginx.conf", args.root, **config['server'])
     sudo("ln -s %s /etc/nginx/conf.d/remote_sge.server.conf" % expandvars(join(args.root, "nginx.conf")))
     restart_service('nginx')
+    setup_gunicorn(args)
 
 def restart_service(name):
     print("Restarting " + name)
