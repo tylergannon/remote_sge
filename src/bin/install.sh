@@ -29,8 +29,6 @@ pyenv install $VERSION
 
 echo "Creating virtualenv called remote_sge."
 pyenv virtualenv $VERSION remote_sge
-echo "Activating virtualenv.  You can do this by typing 'pyenv activate remote_sge'"
-echo 'remote_sge' > .python-version
 
 if [[ `python --version` != "Python ${VERSION}" ]]; then
     echo "Expected Python ${VERSION} but got `python --version`."
@@ -38,7 +36,23 @@ if [[ `python --version` != "Python ${VERSION}" ]]; then
     exit 1
 fi
 
-echo "Okay all done.  You can proceed with 'python -m sge_server.install'"
+cat << EOF
+
+
+Okay initial tools installed.  Please restart your shell or else paste the following:
+
+export PATH="\$HOME/.pyenv/bin:\$PATH"
+eval "\$(pyenv init -)"
+eval "\$(pyenv virtualenv-init -)"
+
+Activate Python $VERSION by typing \`pyenv activate remote_sge\`.
+To automatically activate it in a given directory, cd to that location and type:
+
+\$ echo remote_sge > .python-version
+
+Once activated you can proceed with 'python -m sge_server.install'"
+
+EOF
 
 # okay what is missing.
 # * Set up the nginx virtual server.
