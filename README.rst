@@ -6,7 +6,5 @@ SGEremote: Remotely submit jobs to GridEngine
 * Retrieve job results.
 * Automated transfer of jobs from one cluster to another.
 
-Two separate modules for client and server:
 
 
-See the :doc:`Server readme <server/README>` for details.
