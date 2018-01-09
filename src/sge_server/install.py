@@ -4,7 +4,7 @@ import sys
 import string
 from string import Template
 import site
-from os.path import join, abspath
+from os.path import join, abspath, expandvars
 from tempfile import NamedTemporaryFile
 
 from argparse import ArgumentParser, RawTextHelpFormatter
@@ -84,9 +84,11 @@ def get_editor(args):
 
 def edit_config_file(name, filename, dest=None, **substitutions):
     source = join(CONFIG_DIR, filename)
+    if dest:
+        substitutions['dest_path']=expandvars(dest)
     with NamedTemporaryFile(mode='w') as temp_file:
         template = string.Template(open(source).read())
-        temp_file.write(template.substitute(dest_path=dest, **substitutions))
+        temp_file.write(expandvars(template.substitute(**substitutions)))
         temp_file.flush()
         print("Press enter to edit %s in your favorite editor." % name)
         sys.stdin.flush()
@@ -144,8 +146,8 @@ class SslKeyCommands(object):
 def install_keys(args):
     certs_path = join(args.root, 'certs')
     maybe_sudo("mkdir -p %s" % certs_path)
-    ssl_config = configparser.ConfigParser()
-    ssl_config.read_string(edit_config_file("SSL Certificate details", 'ssl_config.ini'))
+    ssl_config = load_config(string=edit_config_file("SSL Certificate details", 'ssl_config.ini'),
+                             name='ssl')
     def make_key(template, message):
         print("Creating " + message)
         maybe_sudo(Template(template).substitute(certs_path=certs_path, **ssl_config['ssl']))
@@ -159,14 +161,28 @@ def install_keys(args):
     make_key(SslKeyCommands.SIGN_CLIENT_CERT, "Client certificate signed by our own CA")
     print("\n\nOkay, I placed all your certificates in " + certs_path)
 
+def load_config(file=None, string=None, name=None):
+    config = configparser.ConfigParser()
+    if file:
+        print("loading " + file)
+        config.read(expandvars(file))
+        print(config.sections())
+    if string:
+        config.read_string(string)
+    if name:
+        CONFIG[name] = config
+    return config
 
 def do_install(args):
     CONFIG['editor'] = get_editor(args)
     if args.alinux:
         sudo("yum -y install " + " ".join(YUM_PACKAGES))
     maybe_sudo("mkdir -p %s" % args.root)
-    # edit_config_file("Main config file", "config.ini", args.root)
+    edit_config_file("Main config file", "config.ini", args.root)
+    config = load_config(file=join(args.root, "config.ini"), name="main")
     install_keys(args)
+    edit_config_file("Web Server Configuration", "nginx.conf", args.root, **config['server'])
+    sudo("ln -s %s /etc/nginx/conf.d/remote_sge.server.conf" % expandvars(join(args.root, "nginx.conf")))
 
 def main():
     args = parse_args()
