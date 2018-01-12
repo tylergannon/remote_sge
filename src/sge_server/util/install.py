@@ -7,15 +7,15 @@ import site
 from os.path import join, abspath, expandvars
 from tempfile import NamedTemporaryFile
 
-from argparse import ArgumentParser, RawTextHelpFormatter
-import sge.shell
+from argparse import RawTextHelpFormatter
+from sge.util.arg_parser import ArgParser
 
 YUM_PACKAGES = ['nginx', 'sqlite-devel', 'readline-devel', 'bzip2-devel',
                 'git', 'gcc', 'gcc-c++', 'kernel-devel', 'make',
                 'zlib-devel', 'openssl-devel']
 
-# CONFIG_DIR = "%s/remote_sge/etc" % site.getsitepackages()[0]
-CONFIG_DIR = '/var/remote_sge/etc'
+CONFIG_DIR = "%s/etc/remote_sge" % site.getsitepackages()[0]
+# CONFIG_DIR = '/var/remote_sge/etc'
 CONFIG = {
     'editor' : None,
     'use_sudo' : False
@@ -95,8 +95,8 @@ def maybe_sudo(command):
     else:
         os.system(command)
 
-parser = ArgumentParser(prog="Remote SGE Server Installer",
-                        formatter_class=RawTextHelpFormatter)
+parser = ArgParser(prog="remote_sge",
+                   formatter_class=RawTextHelpFormatter)
 
 def get_editor(args):
     if args.editor:
@@ -128,6 +128,7 @@ def parse_args():
     parser.description = """
     Installs a working remote SGE server component.
     """
+    parser.add_argument('install_server', help='Command.')
     parser.add_argument('-e', '--editor', help=EDITOR_TEXT, default=None)
     parser.add_argument('-i', '--install',
                         help="Perform the installation.",
@@ -209,7 +210,6 @@ def setup_gunicorn(args):
     sudo("ln -s /var/remote_sge/bin/gunicorn_init.d.sh /etc/init.d/remote_sge")
 
 def do_install(args):
-    os.system("$HOME/.pyenv/versions/remote_sge/bin/pip install requests filelock")
     CONFIG['editor'] = get_editor(args)
     if args.alinux:
         sudo("yum -y install " + " ".join(YUM_PACKAGES))

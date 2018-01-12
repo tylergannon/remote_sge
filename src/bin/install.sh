@@ -36,6 +36,8 @@ if [[ `$HOME/.pyenv/versions/remote_sge/bin/python --version` != "Python ${VERSI
     exit 1
 fi
 
+$HOME/.pyenv/versions/remote_sge/bin/pip install remote-sge
+
 cat << EOF
 
 
