@@ -38,9 +38,7 @@ case "$1" in
         su -l testuser -c "/home/testuser/.pyenv/versions/remote_sge/bin/gunicorn --daemon -m 0007 -c /home/testuser/.config/remote_sge/gunicorn_config.py sge_server:app"
     ;;
   stop)
-        log_daemon_msg "Stopping deferred execution scheduler" "APPNAME"
-        killproc -p $PIDFILE $DAEMON
-        log_end_msg $?
+    killall gunicorn
     ;;
   force-reload|restart)
     $0 stop
