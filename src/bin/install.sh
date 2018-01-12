@@ -8,7 +8,7 @@
 VERSION=3.6.4
 
 echo "Installing pyenv."
-
+sudo yum install git
 curl -L https://raw.githubusercontent.com/pyenv/pyenv-installer/master/bin/pyenv-installer | bash
 
 export PATH="$HOME/.pyenv/bin:$PATH"
@@ -21,7 +21,7 @@ eval "\$(pyenv init -)"
 eval "\$(pyenv virtualenv-init -)"
 EOF
 #   * Ensure that readline is there for Python.  We don't care about sqlite3.
-[[ ! -z `which yum 2>/dev/null` ]] && echo "Installing readline-devel" && sudo yum -y install readline-devel
+[[ -z "$DOCKER" ]] && [[ ! -z `which yum 2>/dev/null` ]] && echo "Installing readline-devel" && sudo yum -y install readline-devel
 [[ ! -z `which pacman 2>/dev/null` ]] && echo "not installing readline" && echo "`pacman -Q readline` is installed"
 #   * Install our Python ($VERSION)
 echo "Installing Python $VERSION"

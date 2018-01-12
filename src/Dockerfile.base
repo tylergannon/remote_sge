@@ -1,0 +1,30 @@
+######################################################
+#
+# Agave DevOps GridEngine Server
+# Tag: agaveapi/gridengine
+#
+# This container provides a standard pbs controller
+# and worker created on top of the agaveapi/centos-base
+# image. Nothing special here.
+#
+# Usage:
+# docker run -h docker.example.com -i -t  \
+#            -p 10022:22                  \ # SSHD, SFTP
+#            --rm agaveapi/gridengine
+#
+# https://bitbucket.org/taccaci/agave-environment
+#
+######################################################
+
+FROM agaveapi/gridengine
+
+MAINTAINER Tyler Gannon <tyler.gannon@interxinc.com>
+
+# Install GridEngine
+RUN yum -y install git nginx sqlite-devel readline-devel bzip2-devel \
+        gcc gcc-c++ kernel-devel make zlib-devel openssl-devel sudo; \
+                yum clean all
+RUN echo "%wheel	ALL=(ALL)	ALL" >> /etc/sudoers
+RUN usermod -aG wheel testuser
+EXPOSE 443
+
