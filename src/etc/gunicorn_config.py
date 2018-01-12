@@ -26,5 +26,7 @@ group="$$USER"
 # Number of worker processes to start
 workers=4
 
+pythonpath="/var/remote_sge"
+
 # Location of the logging config file.  Don't change this, probably.
 logconfig = "${dest_path}/logging.conf"

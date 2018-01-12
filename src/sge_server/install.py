@@ -15,7 +15,7 @@ YUM_PACKAGES = ['nginx', 'sqlite-devel', 'readline-devel', 'bzip2-devel',
                 'zlib-devel', 'openssl-devel']
 
 # CONFIG_DIR = "%s/remote_sge/etc" % site.getsitepackages()[0]
-CONFIG_DIR = '/home/tyler/src/python/remote_sge/src/etc'
+CONFIG_DIR = '/var/remote_sge/etc'
 CONFIG = {
     'editor' : None,
     'use_sudo' : False
@@ -188,10 +188,13 @@ def load_config(file=None, string=None, name=None):
     return config
 
 def setup_gunicorn(args):
-    os.system("pip install flask gunicorn")
-    pass
+    os.system("$HOME/.pyenv/versions/remote_sge/bin/pip install flask gunicorn")
+    edit_config_file("Gunicorn Config File", "gunicorn_config.py", args.root)
+    edit_config_file("Gunicorn Upstart Config", "gunicorn_upstart.conf", args.root)
+    sudo("ln -s %s /etc/init/restful_sge_wsgi.conf" % expandvars(join(args.root, "gunicorn_upstart.conf")))
 
 def do_install(args):
+    os.system("$HOME/.pyenv/versions/remote_sge/bin/pip install requests filelock")
     CONFIG['editor'] = get_editor(args)
     if args.alinux:
         sudo("yum -y install " + " ".join(YUM_PACKAGES))

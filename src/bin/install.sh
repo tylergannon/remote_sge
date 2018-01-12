@@ -29,8 +29,8 @@ pyenv install $VERSION
 
 echo "Creating virtualenv called remote_sge."
 pyenv virtualenv $VERSION remote_sge
-pyenv activate remote_sge
-if [[ `python --version` != "Python ${VERSION}" ]]; then
+
+if [[ `$HOME/.pyenv/versions/remote_sge/bin/python --version` != "Python ${VERSION}" ]]; then
     echo "Expected Python ${VERSION} but got `python --version`."
     echo "Exiting."
     exit 1
