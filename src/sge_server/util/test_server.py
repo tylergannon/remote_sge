@@ -36,7 +36,7 @@ def main():
     else:
         cert = join(configdir, 'certs', 'client.crt')
 
-    response = requests.get("https://localhost/:%s" % args.port, cert=(cert, key), verify=False)
+    response = requests.get("https://localhost:%s/" % args.port, cert=(cert, key), verify=False)
     if response.status_code == 200:
         print("It works!")
     else:

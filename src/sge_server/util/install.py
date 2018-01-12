@@ -3,7 +3,6 @@ import configparser
 import sys
 import string
 from string import Template
-import site
 from os.path import join, abspath, expandvars
 from tempfile import NamedTemporaryFile
 
@@ -14,7 +13,7 @@ YUM_PACKAGES = ['nginx', 'sqlite-devel', 'readline-devel', 'bzip2-devel',
                 'git', 'gcc', 'gcc-c++', 'kernel-devel', 'make',
                 'zlib-devel', 'openssl-devel']
 
-CONFIG_DIR = "%s/etc/remote_sge" % site.getsitepackages()[0]
+CONFIG_DIR = "%s/etc/remote_sge" % sys.prefix
 # CONFIG_DIR = '/var/remote_sge/etc'
 CONFIG = {
     'editor' : None,

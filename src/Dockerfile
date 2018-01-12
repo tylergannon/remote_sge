@@ -1,7 +1,7 @@
 ######################################################
 #
-# Agave DevOps GridEngine Server
-# Tag: agaveapi/gridengine
+# GridEngine Server
+# Tag: tylergannon/gridengine
 #
 # This container provides a standard pbs controller
 # and worker created on top of the agaveapi/centos-base
@@ -9,8 +9,9 @@
 #
 # Usage:
 # docker run -h docker.example.com -i -t  \
-#            -p 10022:22                  \ # SSHD, SFTP
-#            --rm agaveapi/gridengine
+#            -p 10022:22                  \ # SSHD, SFTP \
+#            -p 4443:443                  \ # HTTPS
+#            --rm tylergannon/gridengine
 #
 # tylergannon/gridengine
 # 

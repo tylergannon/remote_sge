@@ -30,14 +30,15 @@ setup(name='remote_sge',
           'License :: OSI Approved :: Apache Software License',
           'Programming Language :: Python :: 3'
       ],
-      packages=['sge', 'sge_client', 'sge_server'],
+      packages=['sge', 'sge_client', 'sge_server', 'sge.util',
+                'sge_client.io', 'sge_server.util', 'sge_client.util'],
       install_requires=[
-        'requests>2.18,<3.0',
-        'filelock>=2.0,<3.0'
+          'requests>2.18,<3.0',
+          'filelock>=2.0,<3.0',
+          'flask>=0.12.2,<0.20',
+          'gunicorn>=19.7.1,<20'
+
       ],
-      extra_requires={
-          'server' : ['flask>=0.12,<0.13','gunicorn>=19.7.1,<20']
-      },
       scripts=[
           'bin/remote_sge_job_wrapper.sh'
       ],
