@@ -1,8 +1,4 @@
 """
-* $RESTFUL_SGE_CONFIG environment variable
-* ~/.config/restful_sge/config.py
-* /etc/restful_sge/config.py
-
 # Gunicorn only cares about the variables set at the very bottom of the file.
 # Restful SGE Client settings can also be provided at the time of object creation.
 

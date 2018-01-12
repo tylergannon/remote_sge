@@ -72,6 +72,19 @@ SYSTEMD_HELP = """Specify this if your system uses systemd.  Otherwise upstart w
 be assumed.  This affects how gunicorn is installed, and how the
 installer will restart services."""
 
+FINAL_MESSAGE = """\n*\n*\n*\n********    FINISHED!!    **********\n
+Installation seems to be successful.
+
+You'll want to do a final check using test_remote_sge_server utility which is provided
+to you, just to ensure connectivity.
+
+I've packaged your client certificates into $HOME/remote_sge_client_certs.tgz.
+Please copy that file to your client machine, you'll need them for client setup.
+
+Now, ssh to the client machine, and begin there.  Toodles!
+
+"""
+
 def sudo(command):
     os.system("sudo %s" % command)
 
@@ -189,9 +202,11 @@ def load_config(file=None, string=None, name=None):
 
 def setup_gunicorn(args):
     os.system("$HOME/.pyenv/versions/remote_sge/bin/pip install flask gunicorn")
-    edit_config_file("Gunicorn Config File", "gunicorn_config.py", args.root)
-    edit_config_file("Gunicorn Upstart Config", "gunicorn_upstart.conf", args.root)
-    sudo("ln -s %s /etc/init/restful_sge_wsgi.conf" % expandvars(join(args.root, "gunicorn_upstart.conf")))
+    edit_config_file("Gunicorn Config File", "gunicorn_config.py", args.root, **CONFIG['main']['server'])
+    edit_config_file("Gunicorn Upstart Config", "gunicorn_upstart.conf", args.root, **CONFIG['main']['server'])
+    edit_config_file("Gunicorn Logging Config", "logging.conf", args.root, **CONFIG['main']['server'])
+    sudo("ln -s %s /etc/init/remote_sge_wsgi.conf" % expandvars(join(args.root, "gunicorn_upstart.conf")))
+    sudo("ln -s /var/remote_sge/bin/gunicorn_init.d.sh /etc/init.d/remote_sge")
 
 def do_install(args):
     os.system("$HOME/.pyenv/versions/remote_sge/bin/pip install requests filelock")
@@ -204,8 +219,11 @@ def do_install(args):
     install_keys(args)
     edit_config_file("Web Server Configuration", "nginx.conf", args.root, **config['server'])
     sudo("ln -s %s /etc/nginx/conf.d/remote_sge.server.conf" % expandvars(join(args.root, "nginx.conf")))
+    sudo("usermod -aG $USER nginx")
     restart_service('nginx')
     setup_gunicorn(args)
+    os.system("tar -cvzf $HOME/remote_sge_client_certs.tgz %s/client.key %s/client.crt 1> /dev/null")
+    print(FINAL_MESSAGE)
 
 def restart_service(name):
     print("Restarting " + name)
