@@ -52,7 +52,8 @@ class JobRequest(object):
             If no job was successfully submitted, returns None.
         """
         qsub_arguments = [*[y for x in self.qsub_options.items() for y in x if y],
-                          self.command_path, *self.command_arguments]
+                          self.command_path, *self.arguments]
+        print(qsub_arguments)
         cmd_output = sge.shell.run(QSUB, *qsub_arguments)
         matches = re.findall(JOB_ID_REGEX, cmd_output)
         if matches:
@@ -83,15 +84,14 @@ class JobRequest(object):
         elif QSubOptions.HOLD in self.qsub_options:
             del self.qsub_options[QSubOptions.HOLD]
 
-
     working_directory = CmdOptionAttr(QSubOptions.WORKING_DIR)
     native_specification = None #: Raw command-line options for qsub.
     start_time = CmdOptionAttr(QSubOptions.START_TIME, DateTimeConverter)#: Start time
-    job_name = CmdOptionAttr(QSubOptions.JOB_NAME)
+    name = CmdOptionAttr(QSubOptions.JOB_NAME)
     output_path = CmdOptionAttr(QSubOptions.OUTPUT_PATH)
     join_files = CmdOptionAttr(QSubOptions.JOIN, BoolConverter)
     deadline_time = CmdOptionAttr(QSubOptions.DEADLINE_TIME, DateTimeConverter)
-    command_arguments = [] #: The arguments to be given to the command.
+    arguments = [] #: The arguments to be given to the command.
     environment = CmdOptionAttr(QSubOptions.ENV, DictionaryConverter)
 
     def __init__(self, **kwargs):

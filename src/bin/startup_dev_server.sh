@@ -12,6 +12,8 @@ sleep 1
 ssh -p 10022 testuser@localhost
 
 pyenv activate remote_sge
+pip install remote-sge
+remote_sge install_server -i
 
 export DOCKER=yes
 

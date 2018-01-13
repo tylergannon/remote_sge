@@ -46,7 +46,7 @@ class JobDetail(object):
     job_id = XPathAttr('JB_job_number', XmlIntDeserializer)
     uid = XPathAttr('JB_uid', XmlIntDeserializer)
     gid = XPathAttr('JB_gid', XmlIntDeserializer)
-    job_name = XPathAttr('JB_job_name')
+    name = XPathAttr('JB_job_name')
     environment = XPathAttr('JB_env_list', XmlEnvironmentDeserializer)
     arguments = XPathAttr('JB_job_args', XmlJobArgumentsDeserializer)
 
@@ -56,7 +56,7 @@ class JobDetail(object):
     def to_dict(self):
         "Makes it into a dictionary"
         return dict(command_path=self.command_path, owner=self.owner, job_id=self.job_id,
-                    uid=self.uid, gid=self.gid, job_name=self.job_name,
+                    uid=self.uid, gid=self.gid, name=self.name,
                     environment=self.environment, arguments=self.arguments)
 
 

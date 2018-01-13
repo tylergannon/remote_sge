@@ -16,15 +16,30 @@ This pattern is recommended in the Flask docs under the heading of `Larger Appli
 
 """
 # from os.path import isdir, expanduser, join
-from flask import Flask
+import json
+import falcon
+from sge_server import job
+# from flask import Flask
 # from .config import SERVER_CONFIG
 
 # if not isdir(SERVER_CONFIG.get('work_root')) or not isdir(SERVER_CONFIG.get('completed_files_root')):
 #     raise ValueError("Check config file and ensure that work_root and completed_files_root exist.")
 
-app = Flask(__name__)
+app = falcon.API()
 
-import sge_server.flask_views
+class DefaultRoute(object):
+    def on_get(self, req, resp):
+        resp.body = json.dumps({
+            'status': 200,
+            'application': "Remote SGE",
+            'message' : "Unauthorized use is forbiddden."
+        })
+        resp.status = falcon.HTTP_200        
+
+app.add_route("/", DefaultRoute())
+app.add_route("/jobs", job.Job())
+
+# import sge_server.flask_views
 
 # if SERVER_CONFIG.get('job_wrapper'):
 #     import restful_sge.job_submission_control

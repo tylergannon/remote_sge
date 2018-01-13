@@ -58,4 +58,4 @@ class SubmitJobTests(unittest.TestCase):
                 "file" : (get_file(), "sleeper.sh.tgz")
             }
             self.client.post("/jobs", data=data)
-        self.assertEqual(remote_job.call_args[-1]['command_arguments'], arguments)
+        self.assertEqual(remote_job.call_args[-1]['arguments'], arguments)

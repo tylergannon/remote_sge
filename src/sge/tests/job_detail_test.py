@@ -30,7 +30,7 @@ def test_job_detail_renders_dictionary(job_detail_object):
     assert type(diction) is dict
     assert diction['command_path'] == job_detail_object.command_path
     assert diction['owner'] == job_detail_object.owner
-    assert diction['job_name'] == job_detail_object.job_name
+    assert diction['name'] == job_detail_object.name
     assert diction['arguments'] == job_detail_object.arguments
     assert diction['environment'] == job_detail_object.environment
     assert diction['job_id'] == job_detail_object.job_id
@@ -43,7 +43,7 @@ def test_job_detail_has_correct_attributes(job_detail_object, job_detail_dict):
     assert job_detail_object.job_id == job_detail_dict['JOB_ID']
     assert job_detail_object.command_path == job_detail_dict['SCRIPT_PATH']
     assert job_detail_object.owner == job_detail_dict['USER']
-    assert job_detail_object.job_name == job_detail_dict['JOB_NAME']
+    assert job_detail_object.name == job_detail_dict['JOB_NAME']
     assert job_detail_object.environment[job_detail_dict['ENVVAR']] == job_detail_dict['ENVVAL']
     assert job_detail_object.arguments == ['50000']
 

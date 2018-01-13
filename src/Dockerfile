@@ -9,8 +9,8 @@
 #
 # Usage:
 # docker run -h docker.example.com -i -t  \
-#            -p 10022:22                  \ # SSHD, SFTP \
-#            -p 4443:443                  \ # HTTPS
+#            -p 127.0.0.1:10022:22                  \ # SSHD, SFTP \
+#            -p 127.0.0.1:4443:443                  \ # HTTPS
 #            --rm tylergannon/gridengine
 #
 # tylergannon/gridengine
@@ -37,6 +37,4 @@ RUN echo "export DOCKER=yes" >> /home/testuser/.bashrc
 RUN su   -l testuser \
         -c "curl -L https://raw.githubusercontent.com/tylergannon/remote_sge/master/src/bin/install.sh | bash"
 
-RUN su   -l testuser \
-        -c "PYENV_VERSION=3.6.4 python -m pip install requests filelock"
 RUN yum -y install vim; yum clean all

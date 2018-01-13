@@ -11,9 +11,6 @@ from pytest_bdd import scenario, given, when, then, parsers
 import requests
 from unittest.mock import ANY
 
-os.environ['SGE_ROOT'] = '/opt'
-os.environ['SGE_ARCH'] = 'amd64'
-
 import sge
 from sge.status import SgeJobStateCode
 import sge_client.shuttle

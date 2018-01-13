@@ -15,14 +15,14 @@ def mega_job_request():
     import datetime
     request = sge.submit.JobRequest()
     request.command_path = '/usr/local/bin/quuxtable'
-    request.command_arguments = ['foo', 'baz', 'quux']
+    request.arguments = ['foo', 'baz', 'quux']
     request.deadline_time = datetime.datetime(2018, 1, 5)
     request.start_time = datetime.datetime(2018, 1, 4)
     request.environment = {'bax' : 'qaax', 'foot' : 'head'}
     request.job_submission_state = sge.submit.JobSubmissionState.HOLD_STATE
     request.join_files = True
 
-    request.job_name = 'bartholomew'
+    request.name = 'bartholomew'
     request.output_path = "/tmp"
     request.working_directory = '/home/funkytron/mywd'
 

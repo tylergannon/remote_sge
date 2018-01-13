@@ -33,11 +33,10 @@ setup(name='remote_sge',
       packages=['sge', 'sge_client', 'sge_server', 'sge.util',
                 'sge_client.io', 'sge_server.util', 'sge_client.util'],
       install_requires=[
-          'requests>2.18,<3.0',
-          'filelock>=2.0,<3.0',
-          'flask>=0.12.2,<0.20',
-          'gunicorn>=19.7.1,<20'
-
+          'requests>2.18',
+          'filelock>=2.0',
+          'falcon>=1.4.0rc2',
+          'gunicorn>=19.7.1'
       ],
       scripts=[
           'bin/remote_sge_job_wrapper.sh'

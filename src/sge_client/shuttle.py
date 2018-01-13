@@ -3,7 +3,7 @@ Plumbing for sending the local job to the remote.
 
 Ultimately, a request needs to be sent to the server, with:
 
-* job_name
+* name
 * arguments
 * job_files
 
@@ -23,7 +23,7 @@ def send_job_to_remote(job_id):
     job_detail = sge.status.get_job_detail(job_id)
 
     requests.post('http://remote-sge.getsandbox.com/jobs.json', json={
-        'name' : job_detail.job_name,
+        'name' : job_detail.name,
         'command' : basename(job_detail.command_path),
         'arguments' : job_detail.arguments,
         'environment' : job_detail.environment,
