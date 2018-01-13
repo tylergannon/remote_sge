@@ -28,6 +28,9 @@ host = remote-sge-host
 port = 443
 client_certificate = None
 
+[general]
+shell = /bin/bash
+
 [server]
 #  The location where jobs in progress will be kept.
 #  Each job will be unpacked into a subdirectory of work_root,

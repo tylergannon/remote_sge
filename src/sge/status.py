@@ -3,7 +3,8 @@ from os import path
 from xml.etree import ElementTree
 import re
 import sge.shell
-from sge.helpers import (XPathAttr, IntConverter, XmlEnvironmentDeserializer,
+from sge.util.xpath_attr_desciptor import XPathAttr
+from sge.util.serializers import (IntConverter, XmlEnvironmentDeserializer,
                          XmlJobArgumentsDeserializer, XmlIntDeserializer)
 
 QSTAT = path.expandvars("${SGE_ROOT}/bin/${SGE_ARCH}/qstat")

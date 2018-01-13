@@ -14,7 +14,7 @@ Your job 35305 ("sleeper.sh") has been submitted
 def mega_job_request():
     import datetime
     request = sge.submit.JobRequest()
-    request.command_path = '/usr/local/bin/quuxtable'
+    request.command = '/usr/local/bin/quuxtable'
     request.arguments = ['foo', 'baz', 'quux']
     request.deadline_time = datetime.datetime(2018, 1, 5)
     request.start_time = datetime.datetime(2018, 1, 4)
@@ -31,7 +31,7 @@ def mega_job_request():
 @pytest.fixture
 def basic_job_request():
     request = sge.submit.JobRequest()
-    request.command_path = '/usr/local/bin/quuxtable'
+    request.command = '/usr/local/bin/quuxtable'
     return request
 
     

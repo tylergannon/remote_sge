@@ -128,12 +128,11 @@
 """
 from os.path import join, abspath, expanduser
 from os import getenv, environ, getcwd
-import site
 import configparser
-# import collections
+from sge.util import package_root
 
 #  Files are loaded in this order.
-DEFAULT_CONFIG_PATH = 'etc/remote_sge/config.ini'
+DEFAULT_CONFIG_PATH = 'etc/config.ini'
 SYSTEM_CONFIG_PATH = '/etc/remote_sge/config.ini'
 USER_CONFIG_PATH = '~/.config/remote_sge/config.ini'
 CWD_CONFIG_PATH = '.remote_sge_config.ini'
@@ -147,7 +146,7 @@ def load_config():
             :class:`~configparser.ConfigParser` object containing the aggregate settings
             from the files described in `Configuring your application`_.
     """
-    files = [abspath(join(site.PREFIXES[0], DEFAULT_CONFIG_PATH)),
+    files = [join(package_root(), DEFAULT_CONFIG_PATH),
             SYSTEM_CONFIG_PATH,
              expanduser(USER_CONFIG_PATH),
              join(getcwd(), CWD_CONFIG_PATH)]

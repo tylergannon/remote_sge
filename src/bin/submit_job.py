@@ -2,7 +2,7 @@ import datetime
 import sge.submit
 
 job = sge.submit.JobRequest()
-job.command_path = '/home/tgannon/sleeper.sh'
+job.command = '/home/tgannon/sleeper.sh'
 job.job_submission_state = sge.submit.JobSubmissionState.HOLD_STATE
 job.join_stdout_and_stderr = True
 job.environment = {'QUUX' : 'asdfalskdj;lkjasdf'}

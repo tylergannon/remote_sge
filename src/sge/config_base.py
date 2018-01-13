@@ -30,6 +30,7 @@ class ConfigBase(object):
         Args:
             configparser (:class:`configparser.ConfigParser`): configuration settings.
         """
+        pass
         self.general_settings = configparser[Sections.GENERAL]
 
     def shell(self):

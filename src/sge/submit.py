@@ -1,8 +1,8 @@
 "For submitting jobs through qsub"
 from os import path
 import re
-from sge.helpers import (DictionaryConverter, DateTimeConverter,
-                         BoolConverter, CmdOptionAttr)
+from sge.util.cmd_opt_descriptor import CmdOptionAttr
+from sge.util.serializers import DictionaryConverter, DateTimeConverter, BoolConverter
 import sge.shell
 
 JOB_ID_REGEX = r"job (\d+) \("
@@ -52,14 +52,14 @@ class JobRequest(object):
             If no job was successfully submitted, returns None.
         """
         qsub_arguments = [*[y for x in self.qsub_options.items() for y in x if y],
-                          self.command_path, *self.arguments]
+                          self.command, *self.arguments]
         print(qsub_arguments)
         cmd_output = sge.shell.run(QSUB, *qsub_arguments)
         matches = re.findall(JOB_ID_REGEX, cmd_output)
         if matches:
             return int(matches[0])
 
-    command_path = None
+    command = None
     """The command to be executed."""
 
     @property
@@ -88,10 +88,16 @@ class JobRequest(object):
     arguments = [] #: The arguments to be given to the command.
     environment = CmdOptionAttr(QSubOptions.ENV, DictionaryConverter)
 
-    working_directory = CmdOptionAttr(QSubOptions.WORKING_DIR)
-    output_path = CmdOptionAttr(QSubOptions.OUTPUT_PATH)
-    join_stdout_and_stderr = CmdOptionAttr(QSubOptions.JOIN, BoolConverter)
-    parallel_environment = CmdOptionAttr(QSubOptions.PARALLEL_ENVIRONMENT)
+    working_directory = CmdOptionAttr(QSubOptions.WORKING_DIR,
+                                      doc="Working directory in which to run the job.")
+    output_path = CmdOptionAttr(QSubOptions.OUTPUT_PATH,
+                                doc="Where to put the output files from the job. " +
+                                    "Defaults to working_directory.")
+    join_stdout_and_stderr = CmdOptionAttr(QSubOptions.JOIN, BoolConverter,
+                                           "If turned on, writes both strout and stderr " +
+                                           "to the same file.")
+    parallel_environment = CmdOptionAttr(QSubOptions.PARALLEL_ENVIRONMENT,
+                                         doc="Parallel environment setting.")
     command_shell = CmdOptionAttr(QSubOptions.SHELL)
     binary_executable = CmdOptionAttr(QSubOptions.BINARY, BoolConverter)
     exec_in_shell = CmdOptionAttr(QSubOptions.EXEC_IN_SHELL, BoolConverter)
