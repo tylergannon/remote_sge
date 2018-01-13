@@ -20,7 +20,7 @@ def mega_job_request():
     request.start_time = datetime.datetime(2018, 1, 4)
     request.environment = {'bax' : 'qaax', 'foot' : 'head'}
     request.job_submission_state = sge.submit.JobSubmissionState.HOLD_STATE
-    request.join_files = True
+    request.join_stdout_and_stderr = True
 
     request.name = 'bartholomew'
     request.output_path = "/tmp"

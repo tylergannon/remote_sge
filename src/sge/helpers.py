@@ -72,7 +72,7 @@ class CmdOptionAttr(object):
     :func:`drmaa.JobTemplate.options` dictionary, using *option_name* as its key.
 
     """
-    def __init__(self, option_name, type_converter=None):
+    def __init__(self, option_name, type_converter=None, doc=None):
         """
         Args:
             option_name (str): the name of the qsub_ option, as described
@@ -84,6 +84,8 @@ class CmdOptionAttr(object):
         """
         self.option_name = option_name
         self.converter = type_converter
+        if doc:
+            self.__doc__ = doc
 
     def __get__(self, instance, _):
         raw_value = instance.qsub_options[self.option_name]

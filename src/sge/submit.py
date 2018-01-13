@@ -84,15 +84,20 @@ class JobRequest(object):
         elif QSubOptions.HOLD in self.qsub_options:
             del self.qsub_options[QSubOptions.HOLD]
 
-    working_directory = CmdOptionAttr(QSubOptions.WORKING_DIR)
-    native_specification = None #: Raw command-line options for qsub.
-    start_time = CmdOptionAttr(QSubOptions.START_TIME, DateTimeConverter)#: Start time
     name = CmdOptionAttr(QSubOptions.JOB_NAME)
-    output_path = CmdOptionAttr(QSubOptions.OUTPUT_PATH)
-    join_files = CmdOptionAttr(QSubOptions.JOIN, BoolConverter)
-    deadline_time = CmdOptionAttr(QSubOptions.DEADLINE_TIME, DateTimeConverter)
     arguments = [] #: The arguments to be given to the command.
     environment = CmdOptionAttr(QSubOptions.ENV, DictionaryConverter)
+
+    working_directory = CmdOptionAttr(QSubOptions.WORKING_DIR)
+    output_path = CmdOptionAttr(QSubOptions.OUTPUT_PATH)
+    join_stdout_and_stderr = CmdOptionAttr(QSubOptions.JOIN, BoolConverter)
+    parallel_environment = CmdOptionAttr(QSubOptions.PARALLEL_ENVIRONMENT)
+    command_shell = CmdOptionAttr(QSubOptions.SHELL)
+    binary_executable = CmdOptionAttr(QSubOptions.BINARY, BoolConverter)
+    exec_in_shell = CmdOptionAttr(QSubOptions.EXEC_IN_SHELL, BoolConverter)
+
+    deadline_time = CmdOptionAttr(QSubOptions.DEADLINE_TIME, DateTimeConverter)
+    start_time = CmdOptionAttr(QSubOptions.START_TIME, DateTimeConverter)#: Start time
 
     def __init__(self, **kwargs):
         """
