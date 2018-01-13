@@ -11,10 +11,10 @@ Subpackages
 Submodules
 ----------
 
-sge\_client\.config module
---------------------------
+sge\_client\.client\_config module
+----------------------------------
 
-.. automodule:: sge_client.config
+.. automodule:: sge_client.client_config
     :members:
     :undoc-members:
     :show-inheritance:
@@ -23,14 +23,6 @@ sge\_client\.shuttle module
 ---------------------------
 
 .. automodule:: sge_client.shuttle
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-sge\_client\.util module
-------------------------
-
-.. automodule:: sge_client.util
     :members:
     :undoc-members:
     :show-inheritance:

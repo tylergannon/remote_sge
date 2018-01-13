@@ -57,7 +57,7 @@ output_path=
 join_stdout_and_stderr=yes
 command_shell=/bin/bash
 # e.g. smp 4 or orte 4
-parallel_environment=
+parallel_environment= smp 4
 binary_executable=no
 # leave empty to submit into the primary queing mechanism
 default_queue=
@@ -71,4 +71,6 @@ exec_in_shell=yes
 
 [command_environment]
 # Environment variables to set for each job.
+VAR1=castlevania iv
+VAR2=supermariokart
 """)

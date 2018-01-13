@@ -1,13 +1,20 @@
 sge package
 ===========
 
+Subpackages
+-----------
+
+.. toctree::
+
+    sge.util
+
 Submodules
 ----------
 
-sge\.const module
------------------
+sge\.config\_base module
+------------------------
 
-.. automodule:: sge.const
+.. automodule:: sge.config_base
     :members:
     :undoc-members:
     :show-inheritance:
@@ -16,14 +23,6 @@ sge\.control module
 -------------------
 
 .. automodule:: sge.control
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-sge\.helpers module
--------------------
-
-.. automodule:: sge.helpers
     :members:
     :undoc-members:
     :show-inheritance:
@@ -48,14 +47,6 @@ sge\.submit module
 ------------------
 
 .. automodule:: sge.submit
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-sge\.version module
--------------------
-
-.. automodule:: sge.version
     :members:
     :undoc-members:
     :show-inheritance:

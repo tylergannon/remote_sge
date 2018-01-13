@@ -4,14 +4,6 @@ sge\_client\.io package
 Submodules
 ----------
 
-sge\_client\.io\.config module
-------------------------------
-
-.. automodule:: sge_client.io.config
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
 sge\_client\.io\.database module
 --------------------------------
 
@@ -32,14 +24,6 @@ sge\_client\.io\.qstat module
 -----------------------------
 
 .. automodule:: sge_client.io.qstat
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-sge\_client\.io\.tunnel module
-------------------------------
-
-.. automodule:: sge_client.io.tunnel
     :members:
     :undoc-members:
     :show-inheritance:

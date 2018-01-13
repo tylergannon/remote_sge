@@ -150,6 +150,7 @@ def load_config():
             SYSTEM_CONFIG_PATH,
              expanduser(USER_CONFIG_PATH),
              join(getcwd(), CWD_CONFIG_PATH)]
+    print(files)
     if CLIENT_CONF_ENVVAR in environ:
         files.insert(0, abspath(getenv(CLIENT_CONF_ENVVAR)))
     parser = configparser.ConfigParser()

@@ -6,4 +6,6 @@ sge_server
 
    sge
    sge_client
+   sge_client.util
    sge_server
+   sge_server.util

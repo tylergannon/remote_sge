@@ -10,7 +10,8 @@ Remote SGE
     :caption: Contents:
 
     installation
-    drmaa
+    certificates
+    server_installation
     modules
     license
 
