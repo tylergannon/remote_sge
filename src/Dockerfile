@@ -28,11 +28,11 @@ MAINTAINER Tyler Gannon <tyler.gannon@interxinc.com>
 RUN yum -y install git nginx sqlite-devel readline-devel bzip2-devel \
         gcc gcc-c++ kernel-devel make zlib-devel openssl-devel sudo; \
                 yum clean all
-RUN echo "%wheel	ALL=(ALL)	ALL" >> /etc/sudoers
 RUN usermod -aG wheel testuser
 EXPOSE 443
 
-RUN yum -y install tar gzip sudo; yum clean all
+RUN yum -y install tar gzip sudo bzip2; yum clean all
+RUN echo "%wheel	ALL=(ALL)	ALL" >> /etc/sudoers
 RUN echo "export DOCKER=yes" >> /home/testuser/.bashrc
 RUN su   -l testuser \
         -c "curl -L https://raw.githubusercontent.com/tylergannon/remote_sge/master/src/bin/install.sh | bash"

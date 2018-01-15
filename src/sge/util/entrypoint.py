@@ -5,8 +5,8 @@ Console entrypoint for various features:
 * Server-Side Installer (remote_sge install_server)
 """
 from argparse import ArgumentParser, RawTextHelpFormatter, REMAINDER
-from sge_client.util.install import main as install_client
-from sge_server.util.install import main as install_server
+from sge_client.util.install_client import do_install as install_client
+from sge_server.util.install_server import main as install_server
 from sge_server.util.test_server import main as test_server
 
 COMMAND_TEXT = """Available commands are:

@@ -12,7 +12,7 @@ def main():
     parser = ArgParser(prog="remote_sge")
     parser.add_argument('test_server', help="Command to run")
     parser.add_argument('configdir', help=CONFIGDIR_HELP)
-    parser.add_argument('-h', '--host', help="Hostname.  Default: localhost", default="localhost")
+    parser.add_argument('-H', '--host', help="Hostname.  Default: localhost", default="localhost")
     parser.add_argument('-p', '--port', help="Port to connect to.  Default: 443", default="443")
     parser.add_argument('-s', '--socket', help="Path to Unix domain socket to connect to.  Default: None." +
                         " If supplied, -h and -p are ignored and unix domain socket will be " +

@@ -13,10 +13,10 @@ YUM_PACKAGES = ['nginx', 'sqlite-devel', 'readline-devel', 'bzip2-devel',
                 'git', 'gcc', 'gcc-c++', 'kernel-devel', 'make',
                 'zlib-devel', 'openssl-devel']
 
-CONFIG_DIR = "%s/etc/remote_sge" % sys.prefix
-# CONFIG_DIR = '/var/remote_sge/etc'
+# CONFIG_DIR = "%s/etc/remote_sge" % sys.prefix
+CONFIG_DIR = 'etc'
 CONFIG = {
-    'editor' : None,
+    'EDITOR' : None,
     'use_sudo' : False
 }
 DEFAULT_EDITOR = 'vim'
@@ -99,13 +99,19 @@ parser = ArgParser(prog="remote_sge",
 
 def get_editor(args):
     if args.editor:
+        print("Given in params")
         return args.editor
     elif 'EDITOR' in os.environ:
+        print("Environ")
         return os.environ['EDITOR']
     else:
+        print("DEFAULT:")
+        print(DEFAULT_EDITOR)
         return DEFAULT_EDITOR
 
-def edit_config_file(name, filename, dest=None, **substitutions):
+def edit_config_file(name, filename, dest=None, editor=None, **substitutions):
+    if not editor:
+        editor = CONFIG['EDITOR']
     source = join(CONFIG_DIR, filename)
     if dest:
         substitutions['dest_path']=expandvars(dest)
@@ -116,7 +122,7 @@ def edit_config_file(name, filename, dest=None, **substitutions):
         print("Press enter to edit %s in your favorite editor." % name)
         sys.stdin.flush()
         sys.stdin.read(1)
-        os.system(CONFIG['editor'] + " " + temp_file.name)
+        os.system(editor + " " + temp_file.name)
         if dest:
             maybe_sudo("cp " + temp_file.name + " " + join(dest, filename))
         else:
@@ -128,7 +134,7 @@ def parse_args():
     Installs a working remote SGE server component.
     """
     parser.add_argument('install_server', help='Command.')
-    parser.add_argument('-e', '--editor', help=EDITOR_TEXT, default=None)
+    parser.add_argument('-e', '--editor', help=EDITOR_TEXT, default=DEFAULT_EDITOR)
     parser.add_argument('-i', '--install',
                         help="Perform the installation.",
                         action="store_true")
@@ -159,11 +165,11 @@ class SslKeyCommands(object):
                        "\"/C=${country_code}/ST=${state}/L=${city}/O=${org}" +
                        "/OU=${org_unit}/CN=${common_name}\"")
     SELF_SIGNED_TLS_CERT=("openssl x509 -req -days 365 -in ${certs_path}/server.csr " +
-                          "-CA ${certs_path}/ca.crt -CAkey ${certs_path}/ca.key " + 
+                          "-CA ${certs_path}/ca.crt -CAkey ${certs_path}/ca.key " +
                           "-set_serial 01 -out ${certs_path}/server.crt")
     CREATE_CLIENT_KEY="openssl genrsa ${enctype} -out ${certs_path}/client.key 1024"
     CREATE_CLIENT_CSR=("openssl req -new -key ${certs_path}/client.key "+
-                       "-out ${certs_path}/client.csr -subj " + 
+                       "-out ${certs_path}/client.csr -subj " +
                        "\"/emailAddress=${email}/C=${country_code}/ST=${state}" +
                        "/L=${city}/O=${org}/OU=${org_unit}/CN=${name}\"")
     SIGN_CLIENT_CERT=("openssl x509 -req -days 365 -in ${certs_path}/client.csr " +
@@ -209,7 +215,7 @@ def setup_gunicorn(args):
     sudo("ln -s /var/remote_sge/bin/gunicorn_init.d.sh /etc/init.d/remote_sge")
 
 def do_install(args):
-    CONFIG['editor'] = get_editor(args)
+    CONFIG['EDITOR'] = args.editor
     if args.alinux:
         sudo("yum -y install " + " ".join(YUM_PACKAGES))
     maybe_sudo("mkdir -p %s" % args.root)
@@ -221,7 +227,8 @@ def do_install(args):
     sudo("usermod -aG $USER nginx")
     restart_service('nginx')
     setup_gunicorn(args)
-    os.system("tar -cvzf $HOME/remote_sge_client_certs.tgz %s/client.key %s/client.crt 1> /dev/null")
+    os.system("tar -cvzf $HOME/remote_sge_client_certs.tgz " +
+              "-C %s client.key client.crt 1> /dev/null" % join(args.root, 'certs'))
     print(FINAL_MESSAGE)
 
 def restart_service(name):

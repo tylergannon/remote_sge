@@ -8,7 +8,7 @@
 VERSION=3.6.4
 
 echo "Installing pyenv."
-sudo yum install git
+sudo yum install git bzip2
 curl -L https://raw.githubusercontent.com/pyenv/pyenv-installer/master/bin/pyenv-installer | bash
 
 export PATH="$HOME/.pyenv/bin:$PATH"

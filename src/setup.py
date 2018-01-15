@@ -30,7 +30,7 @@ setup(name='remote_sge',
           'License :: OSI Approved :: Apache Software License',
           'Programming Language :: Python :: 3'
       ],
-      packages=['sge', 'sge_client', 'sge_server', 'sge.util',
+      packages=['sge', 'sge.io', 'sge_client', 'sge_server', 'sge.util',
                 'sge_client.io', 'sge_server.util', 'sge_client.util'],
       install_requires=[
           'requests>2.18',
